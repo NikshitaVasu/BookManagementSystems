@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RiMenu3Line, RiCloseLine } from 'react-icons/ri';
 import logo from '../../assets/logo.svg';
 import './navbar.css';
@@ -19,6 +19,21 @@ const Menu = () => (
 
 const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    const savedMode = localStorage.getItem('darkMode') === 'true';
+    setDarkMode(savedMode);
+    document.body.classList.toggle('dark-mode', savedMode);
+  }, []);
+
+  const toggleDarkMode = () => {
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    localStorage.setItem('darkMode', newDarkMode);
+    document.body.classList.toggle('dark-mode', newDarkMode);
+  };
+
   return (
     <nav className='navbar'>
       <div className='navbar-links'>
@@ -43,6 +58,9 @@ const Navbar = () => {
           </div>
         )}
       </div>
+      <button className='dark-mode-toggle' onClick={toggleDarkMode}>
+        {darkMode ? 'Light Mode' : 'Dark Mode'}
+      </button>
     </nav>
   );
 };
